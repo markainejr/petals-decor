@@ -31,9 +31,71 @@
     <!-- Robots -->
     <meta name="robots" content="index, follow">
     <meta name="googlebot" content="index, follow">
+
+    <!-- Additional Meta Tags -->
+    <meta name="author" content="Petals Decor">
+    <meta name="geo.region" content="UG">
+    <meta name="geo.placename" content="Kampala">
+    <meta name="theme-color" content="#6B46C1">
+    
+    <!-- Preconnect to important third-party domains -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    
+    <!-- Favicon -->
+    <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
+    <link rel="manifest" href="/site.webmanifest">
   </head>
   <body>
     <div id="root"></div>
     <script type="module" src="/src/main.tsx"></script>
+
+    <!-- Structured Data -->
+    <script type="application/ld+json">
+      {
+        "@context": "https://schema.org",
+        "@type": "LocalBusiness",
+        "name": "Petals Decor",
+        "image": "/images/og-image.jpg",
+        "description": "Transform your events into unforgettable experiences with Petals Decor. Specializing in wedding decorations, cultural ceremonies, and corporate events in Kampala, Uganda.",
+        "address": {
+          "@type": "PostalAddress",
+          "streetAddress": "Kampala",
+          "addressLocality": "Kampala",
+          "addressRegion": "Central Region",
+          "addressCountry": "UG"
+        },
+        "geo": {
+          "@type": "GeoCoordinates",
+          "latitude": "0.3476",
+          "longitude": "32.5825"
+        },
+        "url": "https://petalsdecor.com",
+        "telephone": "+256782713764",
+        "priceRange": "$$",
+        "openingHoursSpecification": {
+          "@type": "OpeningHoursSpecification",
+          "dayOfWeek": [
+            "Monday",
+            "Tuesday",
+            "Wednesday",
+            "Thursday",
+            "Friday",
+            "Saturday",
+            "Sunday"
+          ],
+          "opens": "08:00",
+          "closes": "18:00"
+        },
+        "sameAs": [
+          "https://facebook.com/petalsdecor",
+          "https://twitter.com/petalsdecor",
+          "https://instagram.com/petalsdecor",
+          "https://linkedin.com/company/petalsdecor"
+        ]
+      }
+    </script>
   </body>
 </html>
