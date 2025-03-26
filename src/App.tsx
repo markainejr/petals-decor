@@ -1,5 +1,5 @@
 import React from 'react';
-import { Menu, X, Heart, Cake, GlassWater, PartyPopper, ChevronRight, Phone, Mail, MapPin, Facebook, Twitter, Instagram, Linkedin, Music2, MessageCircle, Star, ArrowRight } from 'lucide-react';
+import { Menu, X, Heart, Cake, GlassWater, PartyPopper, ChevronRight, Phone, Mail, MapPin, Facebook, Twitter, Instagram, Linkedin, Music2, MessageCircle, Star, ArrowRight, Send } from 'lucide-react';
 import ReactGA from 'react-ga4';
 import { motion, AnimatePresence } from 'framer-motion';
 import { useInView } from 'react-intersection-observer';
@@ -8,11 +8,37 @@ function App() {
   const [isMenuOpen, setIsMenuOpen] = React.useState(false);
   const [showWhatsApp, setShowWhatsApp] = React.useState(false);
   const [activeService, setActiveService] = React.useState<number | null>(null);
-  const [videoPlaying, setVideoPlaying] = React.useState(true);
+  // Removed unused videoPlaying state
+  const [activeNavItem, setActiveNavItem] = React.useState('home');
+  const [chatMessage, setChatMessage] = React.useState('');
+  const [isNavVisible, setIsNavVisible] = React.useState(true);
+  const [lastScrollY, setLastScrollY] = React.useState(0);
 
-  // Intersection Observer hooks for animations
-  const [servicesRef, servicesInView] = useInView({ triggerOnce: true, threshold: 0.1 });
-  const [galleryRef, galleryInView] = useInView({ triggerOnce: true, threshold: 0.1 });
+  // Intersection Observer hooks for animations and section tracking
+  const [homeRef, homeInView] = useInView({ threshold: 0.5 });
+  const [servicesRef, servicesInView] = useInView({ threshold: 0.3 });
+  const [galleryRef, galleryInView] = useInView({ threshold: 0.3 });
+  const [contactRef, contactInView] = useInView({ threshold: 0.3 });
+
+  // Handle navigation visibility on scroll
+  React.useEffect(() => {
+    const handleScroll = () => {
+      const currentScrollY = window.scrollY;
+      setIsNavVisible(currentScrollY < lastScrollY || currentScrollY < 100);
+      setLastScrollY(currentScrollY);
+    };
+
+    window.addEventListener('scroll', handleScroll, { passive: true });
+    return () => window.removeEventListener('scroll', handleScroll);
+  }, [lastScrollY]);
+
+  // Update active navigation item based on scroll position
+  React.useEffect(() => {
+    if (homeInView) setActiveNavItem('home');
+    if (servicesInView) setActiveNavItem('services');
+    if (galleryInView) setActiveNavItem('gallery');
+    if (contactInView) setActiveNavItem('contact');
+  }, [homeInView, servicesInView, galleryInView, contactInView]);
 
   // Track page view and scroll depth
   React.useEffect(() => {
@@ -34,7 +60,20 @@ function App() {
     return () => window.removeEventListener('scroll', trackScrollDepth);
   }, []);
 
-  // Track navigation clicks
+  const handleWhatsAppSubmit = (e: React.FormEvent) => {
+    e.preventDefault();
+    if (chatMessage.trim()) {
+      const encodedMessage = encodeURIComponent(chatMessage);
+      window.open(`https://wa.me/256782713764?text=${encodedMessage}`, '_blank');
+      ReactGA.event({
+        category: 'Chat',
+        action: 'Send',
+        label: 'WhatsApp Message'
+      });
+      setChatMessage('');
+    }
+  };
+
   const trackNavClick = (section: string) => {
     ReactGA.event({
       category: "Navigation",
@@ -43,7 +82,6 @@ function App() {
     });
   };
 
-  // Track form submission
   const handleFormSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     ReactGA.event({
@@ -54,39 +92,12 @@ function App() {
     // Add your form submission logic here
   };
 
-  // Track social media clicks
   const trackSocialClick = (platform: string) => {
     ReactGA.event({
       category: "Social",
       action: "Click",
       label: platform
     });
-  };
-
-  // Track WhatsApp button click
-  const handleWhatsAppClick = () => {
-    setShowWhatsApp(true);
-    ReactGA.event({
-      category: "Chat",
-      action: "Open",
-      label: "WhatsApp"
-    });
-  };
-
-  // Animation variants
-  const fadeInUp = {
-    hidden: { opacity: 0, y: 20 },
-    visible: { opacity: 1, y: 0, transition: { duration: 0.6 } }
-  };
-
-  const staggerChildren = {
-    hidden: { opacity: 0 },
-    visible: {
-      opacity: 1,
-      transition: {
-        staggerChildren: 0.2
-      }
-    }
   };
 
   const services = [
@@ -108,8 +119,8 @@ function App() {
       description: 'Create unforgettable birthday memories with our creative and vibrant party setups.',
       features: [
         'Theme-based decorations',
-        'Balloon arrangements',
-        'Custom photo areas',
+        'Balloon Work',
+        'Custom photoBooth',
         'Table settings',
         'Kids party specialties'
       ]
@@ -141,69 +152,95 @@ function App() {
   ];
 
   const galleryImages = [
-    { url: "/images/wedding-1.jpg", alt: "Elegant African wedding decoration with traditional elements and modern touches" },
-    { url: "/images/wedding-2.jpg", alt: "Traditional African wedding ceremony setup with cultural symbols" },
-    { url: "/images/wedding-3.jpg", alt: "Luxurious wedding reception decoration with African-inspired designs" },
-    { url: "/images/wedding-4.jpg", alt: "Contemporary African wedding setup with traditional accents" },
-    { url: "/images/wedding-5.jpg", alt: "Modern wedding reception hall decorated with African art and flowers" },
-    { url: "/images/wedding-6.jpg", alt: "Outdoor wedding venue decorated with traditional African elements" },
-    { url: "/images/cultural-1.jpg", alt: "Traditional ceremony space with authentic African decorations" },
-    { url: "/images/cultural-2.jpg", alt: "Cultural celebration venue with traditional symbols and modern lighting" },
-    { url: "/images/cultural-3.jpg", alt: "Corporate event space with African-inspired professional decor" },
-    { url: "/images/cultural-4.jpg", alt: "Birthday celebration setup with vibrant African themes" },
-    { url: "/images/cultural-5.jpg", alt: "Traditional gathering space with cultural decorative elements" },
-    { url: "/images/cultural-6.jpg", alt: "Modern event venue with traditional African art and decor" }
+    { url: "/images/wedding1.jpg", alt: "Elegant wedding decoration with traditional elements" },
+    { url: "/images/wedding2.jpg", alt: "Traditional ceremony setup" },
+    { url: "/images/reception1.jpg", alt: "Luxurious wedding reception decoration" },
+    { url: "/images/reception2.jpg", alt: "Contemporary wedding setup" },
+    { url: "/images/corporate1.jpg", alt: "Corporate event decoration" },
+    { url: "/images/corporate2.jpg", alt: "Professional business event setup" },
+    { url: "/images/birthday1.jpg", alt: "Vibrant birthday party decoration" },
+    { url: "/images/birthday2.jpg", alt: "Children's party setup" },
+    { url: "/images/cultural1.jpg", alt: "Traditional cultural ceremony decoration" },
+    { url: "/images/cultural2.jpg", alt: "Cultural celebration setup" },
+    { url: "/images/outdoor1.jpg", alt: "Outdoor event decoration" },
+    { url: "/images/outdoor2.jpg", alt: "Garden party setup" }
   ];
 
   return (
     <div className="min-h-screen bg-white">
-      {/* Navigation */}
+      {/* Enhanced Navigation */}
       <motion.nav 
         initial={{ y: -100 }}
-        animate={{ y: 0 }}
-        transition={{ duration: 0.6 }}
-        className="bg-white shadow-md fixed w-full z-50"
+        animate={{ 
+          y: isNavVisible ? 0 : -100,
+          opacity: isNavVisible ? 1 : 0
+        }}
+        transition={{ duration: 0.3 }}
+        className="fixed w-full z-50 bg-white/80 backdrop-blur-md shadow-lg"
       >
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex justify-between h-16">
             <motion.div 
-              className="flex items-center space-x-2"
+              className="flex items-center space-x-3"
               whileHover={{ scale: 1.05 }}
             >
-              <div className="flex items-center justify-center w-10 h-10 rounded-full bg-purple-800 text-white">
-                <PartyPopper className="w-6 h-6" />
+              <div className="flex items-center justify-center w-12 h-12 rounded-full bg-gradient-to-r from-purple-600 to-purple-800 text-white">
+                <PartyPopper className="w-7 h-7" />
               </div>
-              <h1 className="text-2xl font-bold text-purple-800">Petals Decor</h1>
+              <h1 className="text-2xl font-bold bg-gradient-to-r from-purple-600 to-purple-800 text-transparent bg-clip-text">
+                Petals Decor
+              </h1>
             </motion.div>
             
             {/* Desktop Navigation */}
-            <div className="hidden md:flex items-center space-x-8">
+            <div className="hidden md:flex items-center space-x-2">
               {['Home', 'Services', 'Gallery', 'Contact'].map((item) => (
                 <motion.a
                   key={item}
                   href={`#${item.toLowerCase()}`}
-                  onClick={() => trackNavClick(item)}
-                  className="text-gray-700 hover:text-purple-800 relative"
-                  whileHover={{ scale: 1.1 }}
+                  onClick={() => {
+                    trackNavClick(item);
+                    setIsMenuOpen(false);
+                  }}
+                  className={`relative px-4 py-2 transition-colors duration-300 ${
+                    activeNavItem === item.toLowerCase()
+                      ? 'text-purple-800'
+                      : 'text-gray-700 hover:text-purple-800'
+                  }`}
+                  whileHover={{ scale: 1.05 }}
                   whileTap={{ scale: 0.95 }}
                 >
                   {item}
+                  {activeNavItem === item.toLowerCase() && (
+                    <motion.div
+                      layoutId="activeIndicator"
+                      className="absolute bottom-0 left-0 right-0 h-0.5 bg-purple-800"
+                      initial={false}
+                      transition={{ type: "spring", stiffness: 500, damping: 30 }}
+                    />
+                  )}
                 </motion.a>
               ))}
             </div>
 
             {/* Mobile menu button */}
-            <motion.div 
+            <motion.button 
               className="md:hidden flex items-center"
               whileTap={{ scale: 0.95 }}
+              onClick={() => setIsMenuOpen(!isMenuOpen)}
             >
-              <button 
-                onClick={() => setIsMenuOpen(!isMenuOpen)}
-                className="text-gray-700"
-              >
-                {isMenuOpen ? <X size={24} /> : <Menu size={24} />}
-              </button>
-            </motion.div>
+              <AnimatePresence mode="wait">
+                <motion.div
+                  key={isMenuOpen ? 'close' : 'menu'}
+                  initial={{ rotate: 0 }}
+                  animate={{ rotate: isMenuOpen ? 90 : 0 }}
+                  exit={{ rotate: 0 }}
+                  transition={{ duration: 0.2 }}
+                >
+                  {isMenuOpen ? <X size={24} /> : <Menu size={24} />}
+                </motion.div>
+              </AnimatePresence>
+            </motion.button>
           </div>
         </div>
 
@@ -214,9 +251,9 @@ function App() {
               initial={{ opacity: 0, height: 0 }}
               animate={{ opacity: 1, height: "auto" }}
               exit={{ opacity: 0, height: 0 }}
-              className="md:hidden"
+              className="md:hidden bg-white/95 backdrop-blur-md"
             >
-              <div className="px-2 pt-2 pb-3 space-y-1">
+              <div className="px-4 py-3 space-y-2">
                 {['Home', 'Services', 'Gallery', 'Contact'].map((item) => (
                   <motion.a
                     key={item}
@@ -225,7 +262,11 @@ function App() {
                       trackNavClick(item);
                       setIsMenuOpen(false);
                     }}
-                    className="block px-3 py-2 text-gray-700 hover:text-purple-800"
+                    className={`block px-4 py-2 rounded-lg transition-colors duration-300 ${
+                      activeNavItem === item.toLowerCase()
+                        ? 'bg-purple-100 text-purple-800'
+                        : 'text-gray-700 hover:bg-purple-50'
+                    }`}
                     whileHover={{ x: 10 }}
                   >
                     {item}
@@ -238,26 +279,13 @@ function App() {
       </motion.nav>
 
       {/* Hero Section */}
-      <section id="home" className="relative pt-16">
+      <section ref={homeRef} id="home" className="relative pt-16">
         <div className="relative h-[600px]">
-          <video 
-            autoPlay 
-            loop 
-            muted 
-            playsInline
+          <img 
+            src="/images/hero-poster.jpg"
+            alt="Beautiful wedding decoration"
             className="w-full h-full object-cover"
-            poster="/images/hero-poster.jpg"
-            onClick={() => {
-              setVideoPlaying(!videoPlaying);
-              ReactGA.event({
-                category: "Video",
-                action: videoPlaying ? "Pause" : "Play",
-                label: "Hero Video"
-              });
-            }}
-          >
-            <source src="/videos/hero.mp4" type="video/mp4" />
-          </video>
+          />
           <motion.div 
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
@@ -285,6 +313,7 @@ function App() {
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ delay: 0.6 }}
+                className="space-y-4"
               >
                 <motion.a 
                   href="#contact"
@@ -295,13 +324,23 @@ function App() {
                 >
                   Book Now
                 </motion.a>
-                <p className="text-sm mt-4 opacity-80">Trusted by 500+ happy clients</p>
+                <div className="flex justify-center items-center space-x-4 mt-8">
+                  <div className="flex -space-x-2">
+                    {[1, 2, 3, 4].map((i) => (
+                      <div
+                        key={i}
+                        className="w-8 h-8 rounded-full border-2 border-white bg-gray-200"
+                      />
+                    ))}
+                  </div>
+                  <div className="flex items-center space-x-2">
+                    <Star className="w-5 h-5 text-yellow-400" />
+                    <span className="text-sm">Trusted by 500+ happy clients</span>
+                  </div>
+                </div>
               </motion.div>
             </div>
           </motion.div>
-          <div className="absolute bottom-4 left-4 bg-black bg-opacity-50 px-3 py-1 rounded-full text-white text-sm cursor-pointer">
-            {videoPlaying ? 'Click to pause' : 'Click to play'}
-          </div>
         </div>
       </section>
 
@@ -310,13 +349,24 @@ function App() {
         ref={servicesRef}
         initial="hidden"
         animate={servicesInView ? "visible" : "hidden"}
-        variants={staggerChildren}
+        variants={{
+          hidden: { opacity: 0 },
+          visible: {
+            opacity: 1,
+            transition: {
+              staggerChildren: 0.2
+            }
+          }
+        }}
         id="services" 
         className="py-20 bg-gray-50"
       >
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <motion.h2 
-            variants={fadeInUp}
+            variants={{
+              hidden: { opacity: 0, y: 20 },
+              visible: { opacity: 1, y: 0, transition: { duration: 0.6 } }
+            }}
             className="text-3xl font-bold text-center mb-12"
           >
             Our Services
@@ -325,7 +375,10 @@ function App() {
             {services.map((service, index) => (
               <motion.div
                 key={index}
-                variants={fadeInUp}
+                variants={{
+                  hidden: { opacity: 0, y: 20 },
+                  visible: { opacity: 1, y: 0, transition: { duration: 0.6 } }
+                }}
                 whileHover={{ y: -5 }}
                 className="bg-white p-6 rounded-lg shadow-lg cursor-pointer"
                 onClick={() => {
@@ -384,13 +437,24 @@ function App() {
         ref={galleryRef}
         initial="hidden"
         animate={galleryInView ? "visible" : "hidden"}
-        variants={staggerChildren}
+        variants={{
+          hidden: { opacity: 0 },
+          visible: {
+            opacity: 1,
+            transition: {
+              staggerChildren: 0.2
+            }
+          }
+        }}
         id="gallery" 
         className="py-20"
       >
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <motion.h2 
-            variants={fadeInUp}
+            variants={{
+              hidden: { opacity: 0, y: 20 },
+              visible: { opacity: 1, y: 0, transition: { duration: 0.6 } }
+            }}
             className="text-3xl font-bold text-center mb-12"
           >
             Our Work
@@ -399,7 +463,10 @@ function App() {
             {galleryImages.map((image, index) => (
               <motion.div
                 key={index}
-                variants={fadeInUp}
+                variants={{
+                  hidden: { opacity: 0, y: 20 },
+                  visible: { opacity: 1, y: 0, transition: { duration: 0.6 } }
+                }}
                 whileHover={{ scale: 1.05 }}
                 className="relative overflow-hidden rounded-lg cursor-pointer"
                 onClick={() => {
@@ -432,52 +499,58 @@ function App() {
       </motion.section>
 
       {/* Contact Section */}
-      <section id="contact" className="py-20 bg-purple-900 text-white">
+      <section ref={contactRef} id="contact" className="py-20 bg-gradient-to-br from-purple-900 to-purple-800 text-white">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <motion.h2 
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
-            className="text-3xl font-bold text-center mb-12"
+            className="text-4xl font-bold text-center mb-12"
           >
-            Contact Us
+            Let's Create Something Amazing Together
           </motion.h2>
           <div className="grid md:grid-cols-2 gap-12">
             <motion.div
               initial={{ opacity: 0, x: -20 }}
               whileInView={{ opacity: 1, x: 0 }}
               viewport={{ once: true }}
+              className="space-y-6"
             >
-              <h3 className="text-2xl font-semibold mb-6">Get in Touch</h3>
+              <h3 className="text-2xl font-semibold mb-8">Get in Touch</h3>
               <div className="space-y-4">
-                <motion.div 
-                  className="flex items-center"
-                  whileHover={{ x: 5 }}
+                <motion.a
+                  href="tel:+256782713764"
+                  whileHover={{ x: 10 }}
+                  className="flex items-center space-x-3 bg-white/10 backdrop-blur-sm p-4 rounded-lg cursor-pointer hover:bg-white/20"
                 >
-                  <Phone className="w-6 h-6 mr-3" />
-                  <span>+256 782713764</span>
-                </motion.div>
-                <motion.div 
-                  className="flex items-center"
-                  whileHover={{ x: 5 }}
+                  <Phone className="w-6 h-6" />
+                  <span className="text-lg">+256 782713764</span>
+                </motion.a>
+                <motion.a
+                  href="mailto:info@petalsdeco.com"
+                  whileHover={{ x: 10 }}
+                  className="flex items-center space-x-3 bg-white/10 backdrop-blur-sm p-4 rounded-lg cursor-pointer hover:bg-white/20"
                 >
-                  <Mail className="w-6 h-6 mr-3" />
-                  <span>info@petalsdeco.com</span>
-                </motion.div>
-                <motion.div 
-                  className="flex items-center"
-                  whileHover={{ x: 5 }}
+                  <Mail className="w-6 h-6" />
+                  <span className="text-lg">info@petalsdeco.com</span>
+                </motion.a>
+                <motion.div
+                  whileHover={{ x: 10 }}
+                  className="flex items-center space-x-3 bg-white/10 backdrop-blur-sm p-4 rounded-lg"
                 >
-                  <MapPin className="w-6 h-6 mr-3" />
-                  <span>Kampala, Uganda</span>
+                  <MapPin className="w-6 h-6" />
+                  <span className="text-lg">Kampala, Uganda</span>
                 </motion.div>
-                <div className="flex space-x-4 mt-6">
+              </div>
+              <div className="pt-8">
+                <h4 className="text-xl font-semibold mb-4">Follow Us</h4>
+                <div className="flex space-x-6">
                   {[
-                    { icon: Facebook, url: "https://facebook.com", label: "Facebook" },
-                    { icon: Twitter, url: "https://twitter.com", label: "Twitter" },
-                    { icon: Instagram, url: "https://instagram.com", label: "Instagram" },
-                    { icon: Linkedin, url: "https://linkedin.com", label: "LinkedIn" },
-                    { icon: Music2, url: "https://tiktok.com", label: "TikTok" }
+                    { icon: Facebook, url: "https://facebook.com/petalsdecor", label: "Facebook" },
+                    { icon: Twitter, url: "https://twitter.com/petalsdecor", label: "Twitter" },
+                    { icon: Instagram, url: "https://instagram.com/petalsdecor", label: "Instagram" },
+                    { icon: Linkedin, url: "https://linkedin.com/company/petalsdecor", label: "LinkedIn" },
+                    { icon: Music2, url: "https://tiktok.com/@petalsdecor", label: "TikTok" }
                   ].map(({ icon: Icon, url, label }) => (
                     <motion.a
                       key={label}
@@ -486,54 +559,54 @@ function App() {
                       rel="noopener noreferrer"
                       onClick={() => trackSocialClick(label)}
                       whileHover={{ scale: 1.2, rotate: 5 }}
-                      className="hover:text-purple-300 transition duration-300"
+                      className="bg-white/10 p-3 rounded-full hover:bg-white/20 transition duration-300"
                     >
                       <Icon className="w-6 h-6" />
                     </motion.a>
                   ))}
-                  <motion.button
-                    onClick={handleWhatsAppClick}
-                    whileHover={{ scale: 1.2, rotate: 5 }}
-                    className="hover:text-purple-300 transition duration-300"
-                  >
-                    <MessageCircle className="w-6 h-6" />
-                  </motion.button>
                 </div>
               </div>
             </motion.div>
+
             <motion.form
               initial={{ opacity: 0, x: 20 }}
               whileInView={{ opacity: 1, x: 0 }}
               viewport={{ once: true }}
               onSubmit={handleFormSubmit}
-              className="space-y-4"
+              className="bg-white/10 backdrop-blur-sm p-8 rounded-xl space-y-6"
             >
-              <motion.input 
-                whileFocus={{ scale: 1.02 }}
-                type="text" 
-                placeholder="Your Name" 
-                className="w-full px-4 py-2 rounded-lg text-gray-900" 
-                required 
-              />
-              <motion.input 
-                whileFocus={{ scale: 1.02 }}
-                type="email" 
-                placeholder="Your Email" 
-                className="w-full px-4 py-2 rounded-lg text-gray-900" 
-                required 
-              />
-              <motion.textarea 
-                whileFocus={{ scale: 1.02 }}
-                placeholder="Your Message" 
-                rows={4} 
-                className="w-full px-4 py-2 rounded-lg text-gray-900"
-                required 
-              ></motion.textarea>
+              <div className="space-y-2">
+                <label className="text-sm font-medium">Your Name</label>
+                <motion.input 
+                  whileFocus={{ scale: 1.02 }}
+                  type="text" 
+                  className="w-full px-4 py-3 rounded-lg bg-white/5 border border-white/20 focus:border-white/40 focus:outline-none" 
+                  required 
+                />
+              </div>
+              <div className="space-y-2">
+                <label className="text-sm font-medium">Your Email</label>
+                <motion.input 
+                  whileFocus={{ scale: 1.02 }}
+                  type="email" 
+                  className="w-full px-4 py-3 rounded-lg bg-white/5 border border-white/20 focus:border-white/40 focus:outline-none" 
+                  required 
+                />
+              </div>
+              <div className="space-y-2">
+                <label className="text-sm font-medium">Your Message</label>
+                <motion.textarea 
+                  whileFocus={{ scale: 1.02 }}
+                  rows={4} 
+                  className="w-full px-4 py-3 rounded-lg bg-white/5 border border-white/20 focus:border-white/40 focus:outline-none resize-none"
+                  required 
+                ></motion.textarea>
+              </div>
               <motion.button 
                 whileHover={{ scale: 1.05 }}
                 whileTap={{ scale: 0.95 }}
                 type="submit" 
-                className="bg-white text-purple-900 px-8 py-3 rounded-lg hover:bg-gray-100 transition duration-300"
+                className="w-full bg-white text-purple-900 px-8 py-4 rounded-lg font-semibold hover:bg-opacity-90 transition duration-300"
               >
                 Send Message
               </motion.button>
@@ -542,47 +615,77 @@ function App() {
         </div>
       </section>
 
-      {/* WhatsApp Modal */}
+      {/* Enhanced Floating WhatsApp Chat */}
       <AnimatePresence>
         {showWhatsApp && (
-          <motion.div 
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            exit={{ opacity: 0 }}
-            className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50"
+          <motion.div
+            initial={{ opacity: 0, scale: 0.8, y: 20 }}
+            animate={{ opacity: 1, scale: 1, y: 0 }}
+            exit={{ opacity: 0, scale: 0.8, y: 20 }}
+            className="fixed bottom-24 right-6 w-80 bg-white rounded-2xl shadow-2xl overflow-hidden z-50"
           >
-            <motion.div 
-              initial={{ scale: 0.9, opacity: 0 }}
-              animate={{ scale: 1, opacity: 1 }}
-              exit={{ scale: 0.9, opacity: 0 }}
-              className="bg-white p-6 rounded-lg max-w-md w-full"
-            >
-              <h3 className="text-xl font-semibold mb-4">Contact us on WhatsApp</h3>
-              <p className="mb-4">Click the button below to start a conversation with us on WhatsApp.</p>
-              <div className="flex justify-between">
-                <motion.a 
+            <div className="bg-green-500 p-4 flex items-center justify-between">
+              <div className="flex items-center space-x-3">
+                <div className="w-10 h-10 rounded-full bg-white/20 flex items-center justify-center">
+                  <MessageCircle className="w-6 h-6 text-white" />
+                </div>
+                <div>
+                  <h3 className="text-white font-semibold">Chat with Us</h3>
+                  <p className="text-green-100 text-sm">Typically replies in minutes</p>
+                </div>
+              </div>
+              <motion.button
+                whileHover={{ scale: 1.1 }}
+                whileTap={{ scale: 0.9 }}
+                onClick={() => setShowWhatsApp(false)}
+                className="text-white hover:text-green-100"
+              >
+                <X className="w-5 h-5" />
+              </motion.button>
+            </div>
+            
+            <div className="p-4 bg-gray-50">
+              <div className="bg-white rounded-lg p-3 shadow-sm mb-4">
+                <p className="text-gray-600">Hello! 👋 Its Petals Decor, How can we help you today?</p>
+              </div>
+            </div>
+
+            <form onSubmit={handleWhatsAppSubmit} className="p-4 bg-white border-t">
+              <div className="flex space-x-2">
+                <motion.input
+                  whileFocus={{ scale: 1.01 }}
+                  type="text"
+                  value={chatMessage}
+                  onChange={(e) => setChatMessage(e.target.value)}
+                  placeholder="Type your message..."
+                  className="flex-1 px-4 py-2 rounded-full border border-gray-200 focus:outline-none focus:border-green-500"
+                />
+                <motion.button
                   whileHover={{ scale: 1.05 }}
                   whileTap={{ scale: 0.95 }}
-                  href="https://wa.me/256782713764"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="bg-green-500 text-white px-6 py-2 rounded-lg hover:bg-green-600 transition duration-300"
+                  type="submit"
+                  className="bg-green-500 text-white p-2 rounded-full hover:bg-green-600 transition-colors duration-200"
                 >
-                  Open WhatsApp
-                </motion.a>
-                <motion.button 
-                  whileHover={{ scale: 1.05 }}
-                  whileTap={{ scale: 0.95 }}
-                  onClick={() => setShowWhatsApp(false)}
-                  className="bg-gray-200 text-gray-800 px-6 py-2 rounded-lg hover:bg-gray-300 transition duration-300"
-                >
-                  Close
+                  <Send className="w-5 h-5" />
                 </motion.button>
               </div>
-            </motion.div>
+            </form>
           </motion.div>
         )}
       </AnimatePresence>
+
+      {/* Enhanced Quick Contact Button */}
+      <motion.button
+        onClick={() => setShowWhatsApp(!showWhatsApp)}
+        className="fixed bottom-6 right-6 bg-green-500 text-white p-4 rounded-full shadow-lg z-50 flex items-center space-x-2"
+        whileHover={{ scale: 1.1 }}
+        whileTap={{ scale: 0.9 }}
+        initial={{ opacity: 0, y: 50 }}
+        animate={{ opacity: 1, y: 0 }}
+      >
+        <MessageCircle className="w-6 h-6" />
+        <span className="hidden md:inline">Chat with us</span>
+      </motion.button>
 
       {/* Footer */}
       <footer className="bg-gray-900 text-white py-8">
