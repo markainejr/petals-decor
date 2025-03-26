@@ -8,7 +8,6 @@ function App() {
   const [isMenuOpen, setIsMenuOpen] = React.useState(false);
   const [showWhatsApp, setShowWhatsApp] = React.useState(false);
   const [activeService, setActiveService] = React.useState<number | null>(null);
-  // Removed unused videoPlaying state
   const [activeNavItem, setActiveNavItem] = React.useState('home');
   const [chatMessage, setChatMessage] = React.useState('');
   const [isNavVisible, setIsNavVisible] = React.useState(true);
@@ -282,7 +281,7 @@ function App() {
       <section ref={homeRef} id="home" className="relative pt-16">
         <div className="relative h-[600px]">
           <img 
-            src="/images/hero-poster.jpg"
+            src="/images/wedding1.jpg"
             alt="Beautiful wedding decoration"
             className="w-full h-full object-cover"
           />
