@@ -280,7 +280,7 @@ function App() {
             src="/images/wedding1.jpg"
             alt="Beautiful wedding decoration"
             className="w-full h-full object-cover"
-            sizes="200vw"
+            sizes="30vw"
           />
           <motion.div 
             initial={{ opacity: 0, y: 20 }}
