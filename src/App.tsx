@@ -277,7 +277,7 @@ function App() {
       <section ref={homeRef} id="home" className="relative pt-16">
         <div className="relative h-[600px]">
           <BlurImage 
-            src="/images/wedding1.jpg"
+            src="/images/hero-poster-optimized.jpg"
             alt="Beautiful wedding decoration"
             className="w-full h-full object-cover"
             sizes="100vw"
