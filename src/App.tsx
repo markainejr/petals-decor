@@ -275,12 +275,12 @@ function App() {
 
       {/* Hero Section */}
       <section ref={homeRef} id="home" className="relative pt-16">
-        <div className="relative h-[600px] md:h-[500px] lg:h-[600px]">
+        <div className="relative h-[600px]">
           <BlurImage 
             src="/images/wedding1.jpg"
             alt="Beautiful wedding decoration"
             className="w-full h-full object-cover"
-            sizes="100vw"
+            sizes="200vw"
           />
           <motion.div 
             initial={{ opacity: 0, y: 20 }}
