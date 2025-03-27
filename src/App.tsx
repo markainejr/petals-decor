@@ -279,8 +279,6 @@ function App() {
           <BlurImage 
             src="/images/wedding1.jpg"
             alt="Beautiful wedding decoration"
-            className="w-full h-full object-cover"
-            sizes="30vw"
           />
           <motion.div 
             initial={{ opacity: 0, y: 20 }}
