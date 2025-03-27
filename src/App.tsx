@@ -147,66 +147,18 @@ function App() {
   ];
 
   const galleryImages = [
-    { 
-      url: "/images/wedding1-optimized.jpg",
-      alt: "Elegant wedding decoration with traditional elements",
-      sizes: "(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
-    },
-    { 
-      url: "/images/wedding2-optimized.jpg",
-      alt: "Traditional ceremony setup",
-      sizes: "(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
-    },
-    { 
-      url: "/images/reception1-optimized.jpg",
-      alt: "Luxurious wedding reception decoration",
-      sizes: "(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
-    },
-    { 
-      url: "/images/reception2-optimized.jpg",
-      alt: "Contemporary wedding setup",
-      sizes: "(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
-    },
-    { 
-      url: "/images/corporate1-optimized.jpg",
-      alt: "Corporate event decoration",
-      sizes: "(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
-    },
-    { 
-      url: "/images/corporate2-optimized.jpg",
-      alt: "Professional business event setup",
-      sizes: "(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
-    },
-    { 
-      url: "/images/birthday1-optimized.jpg",
-      alt: "Vibrant birthday party decoration",
-      sizes: "(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
-    },
-    { 
-      url: "/images/birthday2-optimized.jpg",
-      alt: "Children's party setup",
-      sizes: "(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
-    },
-    { 
-      url: "/images/cultural1-optimized.jpg",
-      alt: "Traditional cultural ceremony decoration",
-      sizes: "(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
-    },
-    { 
-      url: "/images/cultural2-optimized.jpg",
-      alt: "Cultural celebration setup",
-      sizes: "(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
-    },
-    { 
-      url: "/images/outdoor1-optimized.jpg",
-      alt: "Outdoor event decoration",
-      sizes: "(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
-    },
-    { 
-      url: "/images/outdoor2-optimized.jpg",
-      alt: "Garden party setup",
-      sizes: "(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
-    }
+    { url: "/images/wedding1.jpg", alt: "Elegant wedding decoration with traditional elements" },
+    { url: "/images/wedding2.jpg", alt: "Traditional ceremony setup" },
+    { url: "/images/reception1.jpg", alt: "Luxurious wedding reception decoration" },
+    { url: "/images/reception2.jpg", alt: "Contemporary wedding setup" },
+    { url: "/images/corporate1.jpg", alt: "Corporate event decoration" },
+    { url: "/images/corporate2.jpg", alt: "Professional business event setup" },
+    { url: "/images/birthday1.jpg", alt: "Vibrant birthday party decoration" },
+    { url: "/images/birthday2.jpg", alt: "Children's party setup" },
+    { url: "/images/cultural1.jpg", alt: "Traditional cultural ceremony decoration" },
+    { url: "/images/cultural2.jpg", alt: "Cultural celebration setup" },
+    { url: "/images/outdoor1.jpg", alt: "Outdoor event decoration" },
+    { url: "/images/outdoor2.jpg", alt: "Garden party setup" }
   ];
 
   return (
@@ -503,7 +455,7 @@ function App() {
           >
             Our Work
           </motion.h2>
-          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6">
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
             {galleryImages.map((image, index) => (
               <motion.div
                 key={index}
@@ -512,7 +464,7 @@ function App() {
                   visible: { opacity: 1, y: 0, transition: { duration: 0.6 } }
                 }}
                 whileHover={{ scale: 1.05 }}
-                className="relative aspect-square overflow-hidden rounded-lg cursor-pointer"
+                className="relative overflow-hidden rounded-lg cursor-pointer"
                 onClick={() => {
                   ReactGA.event({
                     category: "Gallery",
@@ -521,11 +473,11 @@ function App() {
                   });
                 }}
               >
-                <BlurImage 
-                  src={image.url}
-                  alt={image.alt}
-                  className="w-full h-full object-cover"
-                  sizes={image.sizes}
+                <img 
+                  src={image.url} 
+                  alt={image.alt} 
+                  className="w-full h-64 object-cover rounded-lg shadow-md" 
+                  loading="lazy"
                 />
                 <motion.div 
                   className="absolute inset-0 bg-black bg-opacity-0 hover:bg-opacity-40 transition-opacity duration-300 flex items-center justify-center"
