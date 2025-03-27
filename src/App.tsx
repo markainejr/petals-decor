@@ -14,7 +14,7 @@ function App() {
   const [isNavVisible, setIsNavVisible] = React.useState(true);
   const [lastScrollY, setLastScrollY] = React.useState(0);
 
-  const [homeRef, homeInView] = useInView({ threshold: 0.3 });
+  const [homeRef, homeInView] = useInView({ threshold: 0.5});
   const [servicesRef, servicesInView] = useInView({ threshold: 0.3 });
   const [galleryRef, galleryInView] = useInView({ threshold: 0.3 });
   const [contactRef, contactInView] = useInView({ threshold: 0.3 });
