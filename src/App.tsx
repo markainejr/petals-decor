@@ -3,6 +3,7 @@ import { Menu, X, Heart, Cake, GlassWater, PartyPopper, ChevronRight, Phone, Mai
 import ReactGA from 'react-ga4';
 import { motion, AnimatePresence } from 'framer-motion';
 import { useInView } from 'react-intersection-observer';
+import { BlurImage } from './components/BlurImage';
 
 function App() {
   const [isMenuOpen, setIsMenuOpen] = React.useState(false);
@@ -13,13 +14,11 @@ function App() {
   const [isNavVisible, setIsNavVisible] = React.useState(true);
   const [lastScrollY, setLastScrollY] = React.useState(0);
 
-  // Intersection Observer hooks for animations and section tracking
   const [homeRef, homeInView] = useInView({ threshold: 0.5 });
   const [servicesRef, servicesInView] = useInView({ threshold: 0.3 });
   const [galleryRef, galleryInView] = useInView({ threshold: 0.3 });
   const [contactRef, contactInView] = useInView({ threshold: 0.3 });
 
-  // Handle navigation visibility on scroll
   React.useEffect(() => {
     const handleScroll = () => {
       const currentScrollY = window.scrollY;
@@ -31,7 +30,6 @@ function App() {
     return () => window.removeEventListener('scroll', handleScroll);
   }, [lastScrollY]);
 
-  // Update active navigation item based on scroll position
   React.useEffect(() => {
     if (homeInView) setActiveNavItem('home');
     if (servicesInView) setActiveNavItem('services');
@@ -39,7 +37,6 @@ function App() {
     if (contactInView) setActiveNavItem('contact');
   }, [homeInView, servicesInView, galleryInView, contactInView]);
 
-  // Track page view and scroll depth
   React.useEffect(() => {
     ReactGA.send({ hitType: "pageview", page: window.location.pathname });
     
@@ -88,7 +85,6 @@ function App() {
       action: "Submit",
       label: "Contact Form"
     });
-    // Add your form submission logic here
   };
 
   const trackSocialClick = (platform: string) => {
@@ -151,23 +147,71 @@ function App() {
   ];
 
   const galleryImages = [
-    { url: "/images/wedding1.jpg", alt: "Elegant wedding decoration with traditional elements" },
-    { url: "/images/wedding2.jpg", alt: "Traditional ceremony setup" },
-    { url: "/images/reception1.jpg", alt: "Luxurious wedding reception decoration" },
-    { url: "/images/reception2.jpg", alt: "Contemporary wedding setup" },
-    { url: "/images/corporate1.jpg", alt: "Corporate event decoration" },
-    { url: "/images/corporate2.jpg", alt: "Professional business event setup" },
-    { url: "/images/birthday1.jpg", alt: "Vibrant birthday party decoration" },
-    { url: "/images/birthday2.jpg", alt: "Children's party setup" },
-    { url: "/images/cultural1.jpg", alt: "Traditional cultural ceremony decoration" },
-    { url: "/images/cultural2.jpg", alt: "Cultural celebration setup" },
-    { url: "/images/outdoor1.jpg", alt: "Outdoor event decoration" },
-    { url: "/images/outdoor2.jpg", alt: "Garden party setup" }
+    { 
+      url: "/images/wedding1-optimized.jpg",
+      alt: "Elegant wedding decoration with traditional elements",
+      sizes: "(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
+    },
+    { 
+      url: "/images/wedding2-optimized.jpg",
+      alt: "Traditional ceremony setup",
+      sizes: "(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
+    },
+    { 
+      url: "/images/reception1-optimized.jpg",
+      alt: "Luxurious wedding reception decoration",
+      sizes: "(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
+    },
+    { 
+      url: "/images/reception2-optimized.jpg",
+      alt: "Contemporary wedding setup",
+      sizes: "(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
+    },
+    { 
+      url: "/images/corporate1-optimized.jpg",
+      alt: "Corporate event decoration",
+      sizes: "(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
+    },
+    { 
+      url: "/images/corporate2-optimized.jpg",
+      alt: "Professional business event setup",
+      sizes: "(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
+    },
+    { 
+      url: "/images/birthday1-optimized.jpg",
+      alt: "Vibrant birthday party decoration",
+      sizes: "(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
+    },
+    { 
+      url: "/images/birthday2-optimized.jpg",
+      alt: "Children's party setup",
+      sizes: "(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
+    },
+    { 
+      url: "/images/cultural1-optimized.jpg",
+      alt: "Traditional cultural ceremony decoration",
+      sizes: "(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
+    },
+    { 
+      url: "/images/cultural2-optimized.jpg",
+      alt: "Cultural celebration setup",
+      sizes: "(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
+    },
+    { 
+      url: "/images/outdoor1-optimized.jpg",
+      alt: "Outdoor event decoration",
+      sizes: "(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
+    },
+    { 
+      url: "/images/outdoor2-optimized.jpg",
+      alt: "Garden party setup",
+      sizes: "(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
+    }
   ];
 
   return (
     <div className="min-h-screen bg-white">
-      {/* Enhanced Navigation */}
+      {/* Navigation */}
       <motion.nav 
         initial={{ y: -100 }}
         animate={{ 
@@ -280,10 +324,11 @@ function App() {
       {/* Hero Section */}
       <section ref={homeRef} id="home" className="relative pt-16">
         <div className="relative h-[600px]">
-          <img 
-            src="/images/wedding1.jpg"
+          <BlurImage 
+            src="/images/hero-poster-optimized.jpg"
             alt="Beautiful wedding decoration"
             className="w-full h-full object-cover"
+            sizes="100vw"
           />
           <motion.div 
             initial={{ opacity: 0, y: 20 }}
@@ -458,7 +503,7 @@ function App() {
           >
             Our Work
           </motion.h2>
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6">
             {galleryImages.map((image, index) => (
               <motion.div
                 key={index}
@@ -467,7 +512,7 @@ function App() {
                   visible: { opacity: 1, y: 0, transition: { duration: 0.6 } }
                 }}
                 whileHover={{ scale: 1.05 }}
-                className="relative overflow-hidden rounded-lg cursor-pointer"
+                className="relative aspect-square overflow-hidden rounded-lg cursor-pointer"
                 onClick={() => {
                   ReactGA.event({
                     category: "Gallery",
@@ -476,11 +521,11 @@ function App() {
                   });
                 }}
               >
-                <img 
-                  src={image.url} 
-                  alt={image.alt} 
-                  className="w-full h-64 object-cover rounded-lg shadow-md" 
-                  loading="lazy"
+                <BlurImage 
+                  src={image.url}
+                  alt={image.alt}
+                  className="w-full h-full object-cover"
+                  sizes={image.sizes}
                 />
                 <motion.div 
                   className="absolute inset-0 bg-black bg-opacity-0 hover:bg-opacity-40 transition-opacity duration-300 flex items-center justify-center"
