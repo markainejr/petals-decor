@@ -2,21 +2,21 @@
 
 Welcome to **Petals Decor**, where creativity meets elegance to transform your events into unforgettable experiences! 🎉💐  
 
-
 ![Petals Decor Banner](https://readme-typing-svg.herokuapp.com/?font=Righteous&size=35&center=true&vCenter=true&width=500&height=70&duration=4000&color=FF69B4&lines=Welcome+to+Petals+Decor!;🎀+Creating+Magical+Moments)
 
 ---
 
 ## 🌟 **About Petals Decor**  
 
-At **Petals Decor**, we specialize in crafting stunning event decorations tailored to your style and vision. From weddings to corporate events, we bring creativity and precision to every detail.   
+At **Petals Decor**, we specialize in crafting stunning event decorations tailored to your style and vision. From weddings to corporate events, we bring creativity and precision to every detail.  
+
 ---
 
 ## 🔧 **Technologies Used**  
-- **TypeScript** for robust and maintainable code.  
-- **Node.js** for server-side development.  
-- **CSS** with responsive design using modern styles.  
-- **Google Analytics 4** for visitor tracking.  
+- TypeScript for robust and maintainable code.  
+- Node.js for server-side development.  
+- CSS with responsive design using modern styles.  
+- Google Analytics 4 for visitor tracking.  
 
 ---
 
@@ -39,9 +39,9 @@ Visit the application at `http://localhost:5173`
 ---
 
 ## 🔍 **SEO Implementation**  
-- **Meta Tags:** Properly configured meta titles, descriptions, and keywords.  
-- **Alt Tags:** Ensured accessibility and image optimization.  
-- **Canonical Tags:** Prevented duplicate content issues.  
+- Meta Tags: Properly configured meta titles, descriptions, and keywords.  
+- Alt Tags: Ensured accessibility and image optimization.  
+- Canonical Tags: Prevented duplicate content issues.  
 
 ---
 
@@ -65,5 +65,5 @@ Visit the application at `http://localhost:5173`
 ---
 
 ## 👤 **Connect With Us!**  
-**GitHub:** [markainejr](https://github.com/markainejr)  
-**GitHub:** [Isaiahmukiibi](https://github.com/Isaiahmukiibi)
+GitHub: [markainejr](https://github.com/markainejr)  
+GitHub: [Isaiahmukiibi](https://github.com/Isaiahmukiibi)
