@@ -3,16 +3,20 @@ import { Menu, X, Heart, Cake, GlassWater, PartyPopper, ChevronRight, Phone, Mai
 import ReactGA from 'react-ga4';
 import { motion, AnimatePresence } from 'framer-motion';
 import { useInView } from 'react-intersection-observer';
+import CountUp from 'react-countup';
+import { useIntersection } from 'react-use';
 
 function App() {
   const [isMenuOpen, setIsMenuOpen] = React.useState(false);
   const [showWhatsApp, setShowWhatsApp] = React.useState(false);
   const [activeService, setActiveService] = React.useState<number | null>(null);
-  // Removed unused videoPlaying state
+  const [selectedImage, setSelectedImage] = React.useState<string | null>(null);
+  const [activeFaq, setActiveFaq] = React.useState<number | null>(null);
   const [activeNavItem, setActiveNavItem] = React.useState('home');
   const [chatMessage, setChatMessage] = React.useState('');
   const [isNavVisible, setIsNavVisible] = React.useState(true);
   const [lastScrollY, setLastScrollY] = React.useState(0);
+  const [scrollProgress, setScrollProgress] = React.useState(0);
 
   // Intersection Observer hooks for animations and section tracking
   const [homeRef, homeInView] = useInView({ threshold: 0.5 });
@@ -24,8 +28,12 @@ function App() {
   React.useEffect(() => {
     const handleScroll = () => {
       const currentScrollY = window.scrollY;
+      const totalScroll = document.documentElement.scrollHeight - window.innerHeight;
+      const currentProgress = (currentScrollY / totalScroll) * 100;
+      
       setIsNavVisible(currentScrollY < lastScrollY || currentScrollY < 100);
       setLastScrollY(currentScrollY);
+      setScrollProgress(currentProgress);
     };
 
     window.addEventListener('scroll', handleScroll, { passive: true });
@@ -151,24 +159,113 @@ function App() {
     }
   ];
 
+  const testimonials = [
+    {
+      name: "Leah Praise",
+      role: "Bride",
+      image: "/images/wedding1.jpg",
+      text: "Petals Decor transformed our wedding into a magical wonderland. Every detail was perfect!"
+    },
+    {
+      name: "Mr.Kituuka Jordan",
+      role: "Corporate Event Manager",
+      image: "/images/wedding1.jpg",
+      text: "Professional, creative, and reliable. Our company events have never looked better."
+    },
+    {
+      name: "Miss Nabatanzi Anitah",
+      role: "Birthday Celebrant",
+      image: "/images/wedding1.jpg",
+      text: "They turned my vision into reality. My guests were amazed by the decorations!"
+    }
+  ];
+
+  const faqs = [
+    {
+      question: "What areas do you serve?",
+      answer: "We primarily serve Kampala and surrounding areas, but we're available for events throughout Uganda with advance booking."
+    },
+    {
+      question: "How far in advance should I book?",
+      answer: "We recommend booking at least 2-3 months in advance for weddings and large events, and 2-4 weeks for smaller events."
+    },
+    {
+      question: "Do you provide setup and teardown services?",
+      answer: "Yes, our team handles complete setup and teardown of all decorations, ensuring a stress-free experience for you."
+    },
+    {
+      question: "What is your pricing structure?",
+      answer: "Our pricing varies based on event type, size, and specific requirements. We offer customized packages to suit different budgets."
+    }
+  ];
+
+  const achievements = [
+    { number: 500, label: "Happy Clients" },
+    { number: 1000, label: "Events Decorated" },
+    { number: 50, label: "Award Nominations" },
+    { number: 15, label: "Years Experience" }
+  ];
+
   const galleryImages = [
-    { url: "/images/wedding1.jpg", alt: "Elegant wedding decoration with traditional elements" },
-    { url: "/images/wedding2.jpg", alt: "Traditional ceremony setup" },
-    { url: "/images/reception1.jpg", alt: "Luxurious wedding reception decoration" },
-    { url: "/images/reception2.jpg", alt: "Contemporary wedding setup" },
-    { url: "/images/corporate1.jpg", alt: "Corporate event decoration" },
-    { url: "/images/corporate2.jpg", alt: "Professional business event setup" },
-    { url: "/images/birthday1.jpg", alt: "Vibrant birthday party decoration" },
-    { url: "/images/birthday2.jpg", alt: "Children's party setup" },
-    { url: "/images/cultural1.jpg", alt: "Traditional cultural ceremony decoration" },
-    { url: "/images/cultural2.jpg", alt: "Cultural celebration setup" },
-    { url: "/images/outdoor1.jpg", alt: "Outdoor event decoration" },
-    { url: "/images/outdoor2.jpg", alt: "Garden party setup" }
+    { 
+      url: "/images/wedding1.jpg",
+      alt: "Elegant wedding decoration with traditional elements" 
+    },
+    { 
+      url: "/images/wedding2.jpg",
+      alt: "Traditional ceremony setup" 
+    },
+    { 
+      url: "/images/reception1.jpg",
+      alt: "Luxurious wedding reception decoration" 
+    },
+    { 
+      url: "/images/reception2.jpg",
+      alt: "Contemporary wedding setup" 
+    },
+    { 
+      url: "/images/corporate1.jpg",
+      alt: "Corporate event decoration" 
+    },
+    { 
+      url: "/images/corporate2.jpg",
+      alt: "Professional business event setup" 
+    },
+    { 
+      url: "/images/birthday1.jpg",
+      alt: "Vibrant birthday party decoration" 
+    },
+    { 
+      url: "/images/birthday2.jpg",
+      alt: "Children's party setup" 
+    },
+    { 
+      url: "/images/cultural1.jpg",
+      alt: "Traditional cultural ceremony decoration" 
+    },
+    { 
+      url: "/images/cultural2.jpg",
+      alt: "Cultural celebration setup" 
+    },
+    { 
+      url: "/images/outdoor1.jpg",
+      alt: "Outdoor event decoration" 
+    },
+    { 
+      url: "/images/outdoor2.jpg",
+      alt: "Garden party setup" 
+    }
   ];
 
   return (
     <div className="min-h-screen bg-white">
-      {/* Enhanced Navigation */}
+      {/* Progress Bar */}
+      <motion.div 
+        className="fixed top-0 left-0 right-0 h-1 bg-purple-800 z-50"
+        style={{ width: `${scrollProgress}%` }}
+      />
+
+      {/* Navigation */}
       <motion.nav 
         initial={{ y: -100 }}
         animate={{ 
@@ -432,6 +529,62 @@ function App() {
         </div>
       </motion.section>
 
+      {/* Achievements Section */}
+      <section className="py-20 bg-purple-900 text-white">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="grid grid-cols-2 md:grid-cols-4 gap-8">
+            {achievements.map((achievement, index) => (
+              <motion.div
+                key={index}
+                initial={{ opacity: 0, y: 20 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true }}
+                className="text-center"
+              >
+                <CountUp
+                  end={achievement.number}
+                  duration={2.5}
+                  className="text-4xl md:text-5xl font-bold"
+                />
+                <p className="mt-2 text-purple-200">{achievement.label}</p>
+              </motion.div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* Testimonials Section */}
+      <section className="py-20 bg-gray-50">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <h2 className="text-3xl font-bold text-center mb-12">What Our Clients Say</h2>
+          <div className="grid md:grid-cols-3 gap-8">
+            {testimonials.map((testimonial, index) => (
+              <motion.div
+                key={index}
+                initial={{ opacity: 0, y: 20 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true }}
+                whileHover={{ scale: 1.05 }}
+                className="bg-white p-6 rounded-xl shadow-lg"
+              >
+                <div className="flex items-center mb-4">
+                  <img
+                    src={testimonial.image}
+                    alt={testimonial.name}
+                    className="w-12 h-12 rounded-full object-cover mr-4"
+                  />
+                  <div>
+                    <h3 className="font-semibold">{testimonial.name}</h3>
+                    <p className="text-gray-600 text-sm">{testimonial.role}</p>
+                  </div>
+                </div>
+                <p className="text-gray-700">{testimonial.text}</p>
+              </motion.div>
+            ))}
+          </div>
+        </div>
+      </section>
+
       {/* Gallery Section */}
       <motion.section 
         ref={galleryRef}
@@ -463,6 +616,7 @@ function App() {
             {galleryImages.map((image, index) => (
               <motion.div
                 key={index}
+                layoutId={image.url}
                 variants={{
                   hidden: { opacity: 0, y: 20 },
                   visible: { opacity: 1, y: 0, transition: { duration: 0.6 } }
@@ -470,6 +624,7 @@ function App() {
                 whileHover={{ scale: 1.05 }}
                 className="relative overflow-hidden rounded-lg cursor-pointer"
                 onClick={() => {
+                  setSelectedImage(image.url);
                   ReactGA.event({
                     category: "Gallery",
                     action: "Click",
@@ -497,6 +652,49 @@ function App() {
           </div>
         </div>
       </motion.section>
+
+      {/* FAQ Section */}
+      <section className="py-20 bg-white">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <h2 className="text-3xl font-bold text-center mb-12">Frequently Asked Questions</h2>
+          <div className="max-w-3xl mx-auto space-y-4">
+            {faqs.map((faq, index) => (
+              <motion.div
+                key={index}
+                initial={false}
+                animate={{ backgroundColor: activeFaq === index ? '#F3F4F6' : '#FFFFFF' }}
+                className="border rounded-lg overflow-hidden"
+              >
+                <button
+                  onClick={() => setActiveFaq(activeFaq === index ? null : index)}
+                  className="w-full px-6 py-4 text-left flex justify-between items-center"
+                >
+                  <span className="font-medium">{faq.question}</span>
+                  <motion.div
+                    animate={{ rotate: activeFaq === index ? 180 : 0 }}
+                    transition={{ duration: 0.2 }}
+                  >
+                    <ChevronRight className="w-5 h-5" />
+                  </motion.div>
+                </button>
+                <AnimatePresence>
+                  {activeFaq === index && (
+                    <motion.div
+                      initial={{ height: 0 }}
+                      animate={{ height: 'auto' }}
+                      exit={{ height: 0 }}
+                      transition={{ duration: 0.2 }}
+                      className="overflow-hidden"
+                    >
+                      <p className="px-6 py-4 text-gray-600">{faq.answer}</p>
+                    </motion.div>
+                  )}
+                </AnimatePresence>
+              </motion.div>
+            ))}
+          </div>
+        </div>
+      </section>
 
       {/* Contact Section */}
       <section ref={contactRef} id="contact" className="py-20 bg-gradient-to-br from-purple-900 to-purple-800 text-white">
@@ -531,7 +729,8 @@ function App() {
                   whileHover={{ x: 10 }}
                   className="flex items-center space-x-3 bg-white/10 backdrop-blur-sm p-4 rounded-lg cursor-pointer hover:bg-white/20"
                 >
-                  <Mail className="w-6 h-6" />
+                  <Mail className="w-6 h-6"
+                  />
                   <span className="text-lg">info@petalsdeco.com</span>
                 </motion.a>
                 <motion.div
@@ -615,7 +814,33 @@ function App() {
         </div>
       </section>
 
-      {/* Enhanced Floating WhatsApp Chat */}
+      {/* Gallery Lightbox */}
+      <AnimatePresence>
+        {selectedImage && (
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            className="fixed inset-0 bg-black bg-opacity-90 z-50 flex items-center justify-center p-4"
+            onClick={() => setSelectedImage(null)}
+          >
+            <motion.img
+              src={selectedImage}
+              alt="Gallery preview"
+              className="max-w-full max-h-[90vh] object-contain"
+              layoutId={selectedImage}
+            />
+            <button
+              className="absolute top-4 right-4 text-white"
+              onClick={() => setSelectedImage(null)}
+            >
+              <X className="w-8 h-8" />
+            </button>
+          </motion.div>
+        )}
+      </AnimatePresence>
+
+      {/* WhatsApp Chat */}
       <AnimatePresence>
         {showWhatsApp && (
           <motion.div
@@ -674,7 +899,7 @@ function App() {
         )}
       </AnimatePresence>
 
-      {/* Enhanced Quick Contact Button */}
+      {/* Quick Contact Button */}
       <motion.button
         onClick={() => setShowWhatsApp(!showWhatsApp)}
         className="fixed bottom-6 right-6 bg-green-500 text-white p-4 rounded-full shadow-lg z-50 flex items-center space-x-2"
