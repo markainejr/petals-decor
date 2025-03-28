@@ -276,7 +276,7 @@ function App() {
       {/* Hero Section */}
       <section ref={homeRef} id="home" className="relative pt-16">
         <div className="relative h-[600px]">
-          <BlurImage 
+          <img
             src="/images/wedding1.jpg"
             alt="Beautiful wedding decoration"
           />
