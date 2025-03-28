@@ -60,7 +60,7 @@ Visit the application at `http://localhost:5173`
 
 ## 🎉 **Acknowledgments**  
 
-![Acknowledgments](https://readme-typing-svg.herokuapp.com/?font=Righteous&size=35&center=true&vCenter=true&width=500&height=70&duration=4000&color=00ff00&lines=Special+thanks+to+Mr.+David+Tubirye.)
+![Acknowledgments](https://readme-typing-svg.herokuapp.com/?font=Righteous&size=35&center=true&vCenter=true&width=500&height=70&duration=4000&color=00ff00&lines=Thanks+to+Mr.+David+Tubirye.)
 
 ---
 
