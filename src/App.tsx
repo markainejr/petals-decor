@@ -163,19 +163,19 @@ function App() {
     {
       name: "Leah Praise",
       role: "Bride",
-      image: "/images/wedding1.jpg",
+      image: "/images/Client1.jpg",
       text: "Petals Decor transformed our wedding into a magical wonderland. Every detail was perfect!"
     },
     {
       name: "Mr.Kituuka Jordan",
       role: "Corporate Event Manager",
-      image: "/images/wedding1.jpg",
+      image: "/images/Client2.jpg",
       text: "Professional, creative, and reliable. Our company events have never looked better."
     },
     {
       name: "Miss Nabatanzi Anitah",
       role: "Birthday Celebrant",
-      image: "/images/wedding1.jpg",
+      image: "/images/Client3.jpg",
       text: "They turned my vision into reality. My guests were amazed by the decorations!"
     }
   ];
