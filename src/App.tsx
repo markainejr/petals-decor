@@ -1,6 +1,7 @@
 import React from 'react';
 import { Menu, X, Heart, Cake, GlassWater, PartyPopper, ChevronRight, Phone, Mail, MapPin, Facebook, Twitter, Instagram, Linkedin, Music2, MessageCircle, Star, ArrowRight, Send } from 'lucide-react';
 import ReactGA from 'react-ga4';
+import { Analytics } from "@vercel/analytics/react";
 import { motion, AnimatePresence } from 'framer-motion';
 import { useInView } from 'react-intersection-observer';
 import CountUp from 'react-countup';
