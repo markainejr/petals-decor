@@ -1,15 +1,12 @@
-# Petals Decor Landing Page
+🌸 Petals Decor Landing Page 🌸
+A beautifully crafted web application built using TypeScript and Node.js. Developed as part of a Digital Marketing class assignment, focusing on SEO strategies and analytics tools.
 
-```markdown
-## Overview
-Welcome to the Petals Decor landing page! This project is a beautifully crafted web application built using **TypeScript** and **Node.js**. It was developed as part of a **Digital Marketing** class assignment, with a focus on implementing effective SEO strategies and utilizing analytics tools.
-
-## Features
-- **SEO Optimization:** Implemented on-page and technical SEO best practices.
-- **Analytics Integration:** Integrated Google Analytics for visitor tracking and insights.
-- **Responsive Design:** Fully responsive and optimized for mobile and desktop views.
-- **Fast Performance:** Efficient design for optimal loading speeds.
-- **Modern UI:** Elegant design with a focus on the decor industry.
+🚀 Features
+✅ SEO Optimization – On-page & technical SEO best practices.
+📊 Analytics Integration – Google Analytics & Vercel Analytics.
+📱 Responsive Design – Optimized for mobile & desktop.
+⚡ Fast Performance – Quick load speeds.
+🎨 Modern UI – Elegant decor-focused design.
 
 ## Technologies Used
 - **TypeScript** for robust and maintainable code.
