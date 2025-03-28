@@ -11,18 +11,12 @@ Welcome to **Petals Decor**, where creativity meets elegance to transform your e
 
 At **Petals Decor**, we specialize in crafting stunning event decorations tailored to your style and vision. From weddings to corporate events, we bring creativity and precision to every detail.  
 
-### 📸 Landing Page  
-<img src="src/landing-page.jpg" alt="Landing Page" width="400">  
-<p align="center"><em>Discover the Art of Elegant Decor</em></p>  
-
-### 📝 Sign Up Page  
-<img src="src/signup-page.jpg" alt="Sign Up Page" width="400">  
-<p align="center"><em>Join Petals Decor and Start Planning Your Dream Event</em></p>  
-
-### 🔒 Login Page  
-<img src="src/login-page.jpg" alt="Login Page" width="400">  
-<p align="center"><em>Access Your Personalized Event Dashboard</em></p>  
-
+## 🚀 Features  
+✅ **SEO Optimization** – On-page and technical SEO best practices.  
+✅ **Analytics Integration** – Google Analytics & Vercel Analytics for visitor insights.  
+✅ **Responsive Design** – Optimized for mobile and desktop views.  
+✅ **Fast Performance** – Efficient design for optimal loading speeds.  
+✅ **Elegant UI** – Modern aesthetics tailored for the decor industry.  
 ---
 
 ## 🔧 **Technologies Used**  
@@ -73,7 +67,7 @@ Visit the application at `http://localhost:5173`
 
 ## 🎉 **Acknowledgments**  
 
-![Acknowledgments](https://readme-typing-svg.herokuapp.com/?font=Righteous&size=35&center=true&vCenter=true&width=500&height=70&duration=4000&color=00ff00&lines=Special+thanks+to+Mr.+David+Tubirye+and+Mr.+Mark+Kayima+for+their+mentorship+and+support.)
+![Acknowledgments](https://readme-typing-svg.herokuapp.com/?font=Righteous&size=35&center=true&vCenter=true&width=500&height=70&duration=4000&color=00ff00&lines=Special+thanks+to+Mr.+David+Tubirye.)
 
 ---
 
