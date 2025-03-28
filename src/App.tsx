@@ -3,22 +3,24 @@ import { Menu, X, Heart, Cake, GlassWater, PartyPopper, ChevronRight, Phone, Mai
 import ReactGA from 'react-ga4';
 import { motion, AnimatePresence } from 'framer-motion';
 import { useInView } from 'react-intersection-observer';
-import { BlurImage } from './components/BlurImage';
 
 function App() {
   const [isMenuOpen, setIsMenuOpen] = React.useState(false);
   const [showWhatsApp, setShowWhatsApp] = React.useState(false);
   const [activeService, setActiveService] = React.useState<number | null>(null);
+  // Removed unused videoPlaying state
   const [activeNavItem, setActiveNavItem] = React.useState('home');
   const [chatMessage, setChatMessage] = React.useState('');
   const [isNavVisible, setIsNavVisible] = React.useState(true);
   const [lastScrollY, setLastScrollY] = React.useState(0);
 
-  const [homeRef, homeInView] = useInView({ threshold: 0.5});
+  // Intersection Observer hooks for animations and section tracking
+  const [homeRef, homeInView] = useInView({ threshold: 0.5 });
   const [servicesRef, servicesInView] = useInView({ threshold: 0.3 });
   const [galleryRef, galleryInView] = useInView({ threshold: 0.3 });
   const [contactRef, contactInView] = useInView({ threshold: 0.3 });
 
+  // Handle navigation visibility on scroll
   React.useEffect(() => {
     const handleScroll = () => {
       const currentScrollY = window.scrollY;
@@ -30,6 +32,7 @@ function App() {
     return () => window.removeEventListener('scroll', handleScroll);
   }, [lastScrollY]);
 
+  // Update active navigation item based on scroll position
   React.useEffect(() => {
     if (homeInView) setActiveNavItem('home');
     if (servicesInView) setActiveNavItem('services');
@@ -37,6 +40,7 @@ function App() {
     if (contactInView) setActiveNavItem('contact');
   }, [homeInView, servicesInView, galleryInView, contactInView]);
 
+  // Track page view and scroll depth
   React.useEffect(() => {
     ReactGA.send({ hitType: "pageview", page: window.location.pathname });
     
@@ -85,6 +89,7 @@ function App() {
       action: "Submit",
       label: "Contact Form"
     });
+    // Add your form submission logic here
   };
 
   const trackSocialClick = (platform: string) => {
@@ -163,7 +168,7 @@ function App() {
 
   return (
     <div className="min-h-screen bg-white">
-      {/* Navigation */}
+      {/* Enhanced Navigation */}
       <motion.nav 
         initial={{ y: -100 }}
         animate={{ 
@@ -276,9 +281,10 @@ function App() {
       {/* Hero Section */}
       <section ref={homeRef} id="home" className="relative pt-16">
         <div className="relative h-[600px]">
-          <img
+          <img 
             src="/images/wedding1.jpg"
             alt="Beautiful wedding decoration"
+            className="w-full h-full object-cover"
           />
           <motion.div 
             initial={{ opacity: 0, y: 20 }}
