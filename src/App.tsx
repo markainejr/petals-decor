@@ -201,10 +201,10 @@ function App() {
   ];
 
   const achievements = [
-    { number: 500, label: "Happy Clients" },
-    { number: 1000, label: "Events Decorated" },
-    { number: 50, label: "Award Nominations" },
-    { number: 15, label: "Years Experience" }
+    { number: 50, label: "Happy Clients" },
+    { number: 70, label: "Events Decorated" },
+    { number: 5, label: "Award Nominations" },
+    { number: 3, label: "Years Experience" }
   ];
 
   const galleryImages = [
